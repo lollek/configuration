@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+
+  grafana:
+    image: grafana/grafana
+    volumes:
+      - /srv/docker/grafana/grafana-lib:/var/lib/grafana:Z
+      - /srv/docker/grafana/grafana-etc:/etc/grafana:Z
+    environment:
+      TZ: Europe/Stockholm
+    ports:
+      - 3000:3000
+    restart: unless-stopped
+
+  influxdb:
+    image: influxdb
+    volumes:
+      - /srv/docker/grafana/influxdb-var:/var/lib/influxdb:Z
+      - /srv/docker/grafana/influxdb.conf:/etc/influxdb/influxdb.conf:Z
+      - /srv/docker/grafana/collectd-types.db:/usr/share/collectd/types.db:Z
+    environment:
+      TZ: Europe/Stockholm
+    ports:
+      - 8086:8086
+      - 25826:25826/udp
+    restart: unless-stopped
