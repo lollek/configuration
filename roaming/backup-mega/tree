@@ -1,0 +1,17 @@
+.
+├── gpg.public.key
+├── hot
+│   ├── _home_nanashi.tar.gz.gpg
+│   ├── iix-notes.daily.psql.gz.gpg
+│   ├── iix-notes.monthly.psql.gz.gpg
+│   └── iix-notes.weekly.psql.gz.gpg
+├── hot-subfolders
+│   ├── 1
+│   ├── 2
+│   └── 3
+├── megarc
+├── stdout.log
+├── sync
+└── sync-cold
+
+2 directories, 12 files

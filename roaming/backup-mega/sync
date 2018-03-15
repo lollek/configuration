@@ -1,0 +1,79 @@
+#! /usr/bin/env bash
+set -euo pipefail
+
+SOURCE_DIR="/mnt/stor/backup"
+CONFIG_DIR="/mnt/stor/backup-mega"
+STAGE_DIR="/dev/null"   # Will be overwritten
+TARGET_DIR="/mnt/backup/hot"
+
+MEGA_FOLDER_NAME="david2-backup/"
+MEGA_SUBFOLDER="$(find "${CONFIG_DIR}/hot-subfolders" -type f -printf '%T+ %p\n' | sort | awk '{print $2; exit}')"
+MEGA_FOLDER_NAME="david2-backup/$(basename "${MEGA_SUBFOLDER}")"
+
+no_progress="--no-progress"
+
+for arg in "${@}"; do
+  case "${arg}" in
+    "-v")
+      set -x
+      no_progress=""
+      ;;
+  esac
+done
+
+prepare_stage_dir() {
+  STAGE_DIR="$(mktemp -d)"
+}
+
+clear_stage_dir() {
+  rm -rf "${STAGE_DIR}"
+}
+
+stage() {
+  local filepath="${1}"
+  local filename="$(basename "${filepath}")"
+  local target="${STAGE_DIR}"
+
+  if [[ -d "${filepath}" ]]; then
+    tar czf "${STAGE_DIR}/${filename}.tar.gz" --warning='no-file-ignored' -C "${SOURCE_DIR}" "${filename}"
+  else
+    cp "${filepath}" "${STAGE_DIR}"
+  fi
+}
+
+encrypt_stage_dir() {
+  for file in "${STAGE_DIR}"/*; do
+    gpg -r 'olle@iix.se' -e "${file}"
+    rm "${file}"
+  done
+}
+
+push_stage_dir() {
+  if [[ -e "${TARGET_DIR}" ]]; then
+    rm -r "${TARGET_DIR}"
+  fi
+  mkdir "${TARGET_DIR}"
+
+  for file in "${STAGE_DIR}"/*; do
+    cp "${file}" "${TARGET_DIR}"
+  done
+}
+
+
+prepare_stage_dir
+for file in ${SOURCE_DIR}/*; do
+  stage "${file}"
+done
+encrypt_stage_dir
+push_stage_dir
+clear_stage_dir
+
+touch "${MEGA_SUBFOLDER}"
+docker run --rm \
+  -v="${CONFIG_DIR}/megarc:/.megarc" \
+  -v="${TARGET_DIR}:/Root/${MEGA_FOLDER_NAME}" \
+  tomzo/megatools-docker \
+  /bin/bash -c "\
+    megarm /Root/${MEGA_FOLDER_NAME}; \
+    megamkdir /Root/${MEGA_FOLDER_NAME}; \
+    megacopy ${no_progress} --local=/Root/${MEGA_FOLDER_NAME} --remote=/Root/${MEGA_FOLDER_NAME}"

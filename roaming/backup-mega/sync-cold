@@ -1,0 +1,18 @@
+#! /usr/bin/env bash
+set -euo pipefail
+
+for arg in "${@}"; do
+  case "${arg}" in
+    "-v") set -x ;;
+  esac
+done
+
+MEGA_DIR="/mnt/stor/backup-mega"
+DEST_DIR="/mnt/backup/cold"
+MEGA_FOLDER_NAME="david2-cold/"
+
+docker run --rm \
+  -v="${MEGA_DIR}/megarc:/.megarc" \
+  -v="${DEST_DIR}:/Root/${MEGA_FOLDER_NAME}" \
+  tomzo/megatools-docker \
+  /bin/bash -c "megarm /Root/${MEGA_FOLDER_NAME}; megamkdir /Root/${MEGA_FOLDER_NAME}; megacopy --local=/Root/${MEGA_FOLDER_NAME} --remote=/Root/${MEGA_FOLDER_NAME}"
