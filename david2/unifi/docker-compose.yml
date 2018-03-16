@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  docker:
+    image: linuxserver/unifi
+    volumes:
+      - /srv/docker/unifi/config:/config
+    environment:
+      PUID: 124
+      PGID: 134
+      TZ: Europe/Stockholm
+    ports:
+      - 8080:8080
+      - 8081:8081
+      - 8443:8443
+      - 8843:8843
+      - 8880:8880
+      - 3478:3478/udp
+    restart: unless-stopped

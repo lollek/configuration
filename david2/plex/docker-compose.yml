@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  docker:
+    image: linuxserver/plex
+    volumes:
+      - /srv/docker/plex/config:/config
+      - /srv/docker/plex/transcode:/transcode
+      - /media/video/Series:/data/tvshows
+      - /media/video/Movies:/data/movies
+    environment:
+      VERSION: public
+      PUID: 124
+      PGID: 1002
+      TZ: Europe/Stockholm
+    ports:
+      - 32400:32400
+      - 32400:32400/udp
+      - 32469:32469
+      - 32469:32469/udp
+      # - 5353:5353/udp
+      # - 1900:1900/udp
+    restart: unless-stopped
