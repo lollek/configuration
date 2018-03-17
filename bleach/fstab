@@ -11,7 +11,7 @@ UUID=7925c437-d9a8-4d8f-bdaf-d928dfc50e5a /mnt/stor     ext4    defaults        
 UUID=a1a072e4-5845-4d64-8397-d5fac9a22294 /boot         ext4    defaults        1 2
 /dev/mapper/fedora-swap                   swap          swap    defaults        0 0
 
-//burm.0/video                            /media/video    cifs    guest,iocharset=utf8,file_mode=0775,dir_mode=0775,gid=media  0 0
-//burm.0/music                            /media/music    cifs    guest,iocharset=utf8,file_mode=0775,dir_mode=0775,gid=media  0 0
-//burm.0/photo                            /media/photo    cifs    guest,iocharset=utf8,file_mode=0775,dir_mode=0775,gid=media  0 0
-//burm.0/misc                             /media/misc     cifs    guest,iocharset=utf8,file_mode=0775,dir_mode=0775,gid=media  0 0
+//burm.0/video                            /media/video    cifs  guest,iocharset=utf8,file_mode=0775,dir_mode=0775,gid=media,context=system_u:object_r:svirt_sandbox_file_t:s0  0 0
+//burm.0/music                            /media/music    cifs  guest,iocharset=utf8,file_mode=0775,dir_mode=0775,gid=media,context=system_u:object_r:svirt_sandbox_file_t:s0  0 0
+//burm.0/photo                            /media/photo    cifs  guest,iocharset=utf8,file_mode=0775,dir_mode=0775,gid=media,context=system_u:object_r:svirt_sandbox_file_t:s0  0 0
+//burm.0/misc                             /media/misc     cifs  guest,iocharset=utf8,file_mode=0775,dir_mode=0775,gid=media,context=system_u:object_r:svirt_sandbox_file_t:s0  0 0
