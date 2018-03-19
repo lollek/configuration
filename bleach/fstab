@@ -7,7 +7,6 @@
 # See man pages fstab(5), findfs(8), mount(8) and/or blkid(8) for more info
 #
 /dev/mapper/fedora-root                   /             xfs     defaults        0 0
-UUID=7925c437-d9a8-4d8f-bdaf-d928dfc50e5a /mnt/stor     ext4    defaults        0 2
 UUID=a1a072e4-5845-4d64-8397-d5fac9a22294 /boot         ext4    defaults        1 2
 /dev/mapper/fedora-swap                   swap          swap    defaults        0 0
 
