@@ -1,0 +1,16 @@
+version: '2'
+
+services:
+    docker:
+        image: emby/embyserver
+        volumes:
+            - /srv/docker/emby/config:/config:Z
+            - /media/video:/mnt/share1
+        ports:
+            - 8096:8096 # To expose the HTTP port
+            - 8920:8920 # # To expose the HTTPS port
+        environment:
+            UID: 2000 # The UID to run emby as (default: 2)
+            GID: 2000 # The GID to run emby as (default 2)
+            GIDLIST: 2000 # A comma-separated list of additional GIDs to run emby as (default: 2)
+        restart: unless-stopped
