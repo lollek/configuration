@@ -1,0 +1,2 @@
+# m  h  dom mon dow   command  
+  0  0   *   *   *    docker run --rm --name certbot -v "/etc/letsencrypt:/etc/letsencrypt:Z" -v "/var/lib/letsencrypt:/var/lib/letsencrypt:Z" -p80:80 certbot/certbot renew --quiet --no-self-upgrade
