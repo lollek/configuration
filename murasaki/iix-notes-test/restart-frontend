@@ -1,0 +1,5 @@
+#! /usr/bin/env bash
+set -euo pipefail
+
+docker pull loll3k/iix.se-vue-frontend
+docker-compose up -d --build frontend

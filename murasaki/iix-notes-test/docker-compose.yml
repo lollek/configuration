@@ -1,0 +1,35 @@
+version: '2'
+
+services:
+  database:
+    image: postgres:9.6-alpine
+    volumes:
+      - /srv/docker/iix-notes-test/data/database:/var/lib/postgresql/data
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    restart: unless-stopped
+
+  frontend:
+    image: loll3k/iix.se-vue-frontend
+    ports:
+      - "127.0.0.1:9003:80"
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    restart: unless-stopped
+
+  backend:
+    image: loll3k/iix.se-golang-backend
+    environment:
+      WEBROOT: "/api"
+      DBHOST: database:5432
+      DBUSER: ${DB_USER}
+      DBPASS: ${DB_PASS}
+      DBNAME: iix-notes
+      JWT: ${JWT}
+    ports:
+      - "127.0.0.1:9002:80"
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    restart: unless-stopped
