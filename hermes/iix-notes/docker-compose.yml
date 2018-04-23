@@ -1,0 +1,35 @@
+version: '2'
+
+services:
+  database:
+    image: postgres:9.6-alpine
+    volumes:
+      - /srv/docker/iix-notes/data/database:/var/lib/postgresql/data
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    restart: unless-stopped
+
+  frontend:
+    image: loll3k/iix.se-vue-frontend
+    ports:
+      - "127.0.0.1:8003:80"
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    restart: unless-stopped
+
+  backend:
+    image: loll3k/spark-backend
+    environment:
+      IP: 0.0.0.0
+      DBPATH: jdbc:postgresql://database:5432/iix-notes
+      DBUSER: ${DB_USER}
+      DBPASSWORD: ${DB_PASS}
+      GOODREADS_KEY: ${GOODREADS_KEY}
+      JWT: ${JWT}
+    ports:
+      - "127.0.0.1:8002:8002"
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    restart: unless-stopped
