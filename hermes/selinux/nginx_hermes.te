@@ -1,0 +1,18 @@
+# Also requires:
+# setsebool -P httpd_can_network_connect 1
+
+module nginx_hermes 1.2;
+
+require {
+	type var_t;
+	type container_file_t;
+	type httpd_t;
+	class file { getattr open read };
+	class lnk_file read;
+}
+
+#============= httpd_t ==============
+allow httpd_t container_file_t:lnk_file read;
+allow httpd_t container_file_t:file { getattr open read };
+
+allow httpd_t var_t:file read;

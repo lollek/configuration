@@ -1,0 +1,11 @@
+
+module sshd_hermes 1.0;
+
+require {
+	type init_t;
+	type sshd_t;
+	class dbus send_msg;
+}
+
+#============= sshd_t ==============
+allow sshd_t init_t:dbus send_msg;

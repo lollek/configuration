@@ -1,0 +1,13 @@
+
+module dovecot_hermes 1.0;
+
+require {
+	type container_file_t;
+	type dovecot_t;
+	class lnk_file read;
+	class file { getattr open read };
+}
+
+#============= dovecot_t ==============
+allow dovecot_t container_file_t:lnk_file read;
+allow dovecot_t container_file_t:file { getattr open read };

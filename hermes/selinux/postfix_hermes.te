@@ -1,0 +1,13 @@
+
+module postfix_hermes 1.0;
+
+require {
+	type container_file_t;
+	type postfix_smtpd_t;
+	class lnk_file read;
+	class file { getattr open read };
+}
+
+#============= postfix_smtpd_t ==============
+allow postfix_smtpd_t container_file_t:lnk_file read;
+allow postfix_smtpd_t container_file_t:file { getattr open read };
