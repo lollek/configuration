@@ -713,6 +713,11 @@ smtpd_tls_key_file=/etc/letsencrypt/live/smtp.iix.se/privkey.pem
 smtpd_tls_session_cache_database = btree:${data_directory}/smtpd_scache
 smtp_tls_session_cache_database = btree:${data_directory}/smtp_scache
 
+smtpd_tls_security_level = may
+smtp_tls_security_level = may
+smtp_tls_loglevel = 1
+smtpd_tls_loglevel = 1
+
 milter_protocol = 2
 milter_default_action = accept
 smtpd_milters = inet:localhost:8891
