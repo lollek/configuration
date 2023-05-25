@@ -16,6 +16,7 @@ smtp      inet  n       -       n       -       -       smtpd
 #tlsproxy  unix  -       -       n       -       0       tlsproxy
 #submission inet n       -       n       -       -       smtpd
 #  -o syslog_name=postfix/submission
+  -o content_filter=spamassassin
   -o smtpd_tls_security_level=may
 #  -o smtpd_sasl_auth_enable=yes
 #  -o smtpd_tls_auth_only=yes
@@ -27,6 +28,7 @@ smtp      inet  n       -       n       -       -       smtpd
 #  -o smtpd_relay_restrictions=permit_sasl_authenticated,reject
 #  -o milter_macro_daemon_name=ORIGINATING
 smtps     inet  n       -       n       -       -       smtpd
+  -o content_filter=spamassassin
   -o syslog_name=postfix/smtps
   -o smtpd_tls_wrappermode=yes
 #  -o smtpd_sasl_auth_enable=yes
@@ -63,6 +65,9 @@ virtual   unix  -       n       n       -       -       virtual
 lmtp      unix  -       -       n       -       -       lmtp
 anvil     unix  -       -       n       -       1       anvil
 scache    unix  -       -       n       -       1       scache
+spamassassin unix -     n       n       -       -       pipe
+  user=spamd argv=/usr/bin/spamc -f -e /usr/sbin/sendmail -oi -f ${sender} ${recipient}
+
 #
 # ====================================================================
 # Interfaces to non-Postfix software. Be sure to examine the manual
@@ -129,3 +134,4 @@ scache    unix  -       -       n       -       1       scache
 #mailman   unix  -       n       n       -       -       pipe
 #  flags=FR user=list argv=/usr/lib/mailman/bin/postfix-to-mailman.py
 #  ${nexthop} ${user}
+postlog   unix-dgram n  -       n       -       1       postlogd
