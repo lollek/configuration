@@ -16,6 +16,7 @@ smtp      inet  n       -       n       -       -       smtpd
 #tlsproxy  unix  -       -       n       -       0       tlsproxy
 #submission inet n       -       n       -       -       smtpd
 #  -o syslog_name=postfix/submission
+   -o content_filter=spamassassin
    -o smtpd_tls_security_level=may
 #  -o smtpd_sasl_auth_enable=yes
 #  -o smtpd_tls_auth_only=yes
@@ -27,6 +28,7 @@ smtp      inet  n       -       n       -       -       smtpd
 #  -o smtpd_relay_restrictions=permit_sasl_authenticated,reject
 #  -o milter_macro_daemon_name=ORIGINATING
 smtps     inet  n       -       n       -       -       smtpd
+   -o content_filter=spamassassin
 #  -o syslog_name=postfix/smtps
 #  -o smtpd_tls_wrappermode=yes
 #  -o smtpd_sasl_auth_enable=yes
@@ -74,6 +76,10 @@ postlog   unix-dgram n  -       n       -       1       postlogd
 # agent.  See the pipe(8) man page for information about ${recipient}
 # and other message envelope options.
 # ====================================================================
+#
+spamassassin unix -     n       n       -       -       pipe
+  user=spamd argv=/usr/bin/spamc -f -e /usr/sbin/sendmail -oi -f ${sender} ${recipient}
+
 #
 # maildrop. See the Postfix MAILDROP_README file for details.
 # Also specify in main.cf: maildrop_destination_recipient_limit=1
