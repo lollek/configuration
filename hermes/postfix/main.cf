@@ -705,7 +705,11 @@ smtpd_sasl_auth_enable = yes
 broken_sasl_auth_clients = yes
 smtpd_sasl_security_options = noanonymous
 smtpd_sasl_local_domain = $myhostname
-smtpd_recipient_restrictions = permit_mynetworks,permit_auth_destination,permit_sasl_authenticated,reject
+smtpd_recipient_restrictions =
+ permit_mynetworks,
+ permit_sasl_authenticated,
+ reject_unauth_destination,
+ check_policy_service unix:postgrey/socket
 
 smtpd_use_tls=yes
 smtpd_tls_cert_file=/etc/letsencrypt/live/smtp.iix.se/fullchain.pem
